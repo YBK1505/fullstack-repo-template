@@ -1,0 +1,17 @@
+const request = require('supertest');
+const app = require('../app');
+
+describe('GET /health', () => {
+  it('returns 200 with status ok', async () => {
+    const res = await request(app).get('/health');
+    expect(res.statusCode).toBe(200);
+    expect(res.body.status).toBe('ok');
+    expect(res.body.timestamp).toBeDefined();
+  });
+
+  it('returns 404 for unknown routes', async () => {
+    const res = await request(app).get('/unknown');
+    expect(res.statusCode).toBe(404);
+    expect(res.body.success).toBe(false);
+  });
+});
